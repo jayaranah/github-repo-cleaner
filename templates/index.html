@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Repo Cleaner</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 30px; max-width: 800px; margin: auto; }
+        h1, h2 { color: #333; }
+        .repo-list { list-style: none; padding-left: 0; }
+        .repo-item { margin-bottom: 10px; }
+        .btn { padding: 10px 20px; background: #d33; color: white; border: none; cursor: pointer; margin-top: 20px; }
+        .btn:hover { background: #a00; }
+        .flash { padding: 10px; margin-bottom: 20px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .danger { background-color: #f8d7da; color: #721c24; }
+        hr { margin: 30px 0; }
+    </style>
+</head>
+<body>
+    <h1>🧹 GitHub Repo Cleaner</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="post">
+        <h2>📁 Personal Repositories</h2>
+        {% if personal_repos %}
+            <ul class="repo-list">
+                {% for repo in personal_repos %}
+                    <li class="repo-item">
+                        <label>
+                            <input type="checkbox" name="repos" value="{{ repo.full_name }}">
+                            {{ repo.full_name }}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No personal repositories found.</p>
+        {% endif %}
+
+        <hr>
+
+        <h2>🍴 Forked Repositories</h2>
+        {% if forked_repos %}
+            <ul class="repo-list">
+                {% for repo in forked_repos %}
+                    <li class="repo-item">
+                        <label>
+                            <input type="checkbox" name="repos" value="{{ repo.full_name }}">
+                            {{ repo.full_name }}
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No forked repositories found.</p>
+        {% endif %}
+
+        <button type="submit" class="btn">🗑️ Delete Selected Repositories</button>
+    </form>
+</body>
+</html>
